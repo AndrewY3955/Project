@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.DS_Store
+
+# Generated pipeline outputs are reproducible and may contain user-provided data.
+data/processed/*
+!data/processed/.gitkeep
+
+# Local Power BI and editor state
+.vscode/
+*.pbix
