@@ -25,8 +25,9 @@ Desktop.ini
 data/processed/*
 !data/processed/.gitkeep
 
-# Incoming source documents may be copyrighted; retain local copies, but do not publish them by default.
-data/intake/incoming/*.pdf
+# Incoming source material stays local unless explicitly reviewed for publication.
+data/intake/incoming/**
+!data/intake/incoming/README.md
 
 # Local editor settings
 .vscode/
