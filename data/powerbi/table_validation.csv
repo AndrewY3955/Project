@@ -1,0 +1,11 @@
+check_id,check,actual,expected,validation_status
+trusted-validation,Trusted dataset validation,PASS,PASS,PASS
+trusted-hash,Trusted hash matches manifest,true,true,PASS
+trusted-ids,Unique trusted record IDs,7,7,PASS
+adversarial-subset,Adversarial IDs are a trusted subset,0,0,PASS
+change-log-ids,Change-log IDs resolve to trusted records,0,0,PASS
+source-links,Trusted source IDs resolve to source register,0,0,PASS
+research-papers,Unique research-paper records,5,5,PASS
+metric-guide,Metrics have comparison guidance,7,7,PASS
+incident-response,Incident-response phases,6,6,PASS
+threat-references,Threat references include source URLs,3,3,PASS

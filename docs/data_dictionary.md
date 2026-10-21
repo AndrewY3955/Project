@@ -25,5 +25,24 @@
 - Electricity carbon intensity → `kgCO2e/kWh`
 - Water consumption → `m3`
 - Greenhouse-gas emissions → `tCO2e`
+- Total energy consumption → `MWh`
+- Water recycled from recovery systems → `m3`
+- Tap water consumption → `m3`
+- Water consumption per 12-inch equivalent wafer mask layer → `L per 12-inch equivalent wafer mask layer`
+- Scope 1 and Scope 2 greenhouse-gas emissions → `t CO2e`
+- Electricity-generation CO2-equivalent output emission rate → `lb CO2e/MWh`
+- Reported greenhouse-gas emissions → `t CO2e`
 
 These are the project's initial unit conventions, not a claim that all source datasets use these units. Convert source values only with a documented method and retain original source units where useful.
+
+## Unit interpretation and safe comparisons
+
+- `MWh` is a unit of energy (1 MWh = 1,000 kWh). Total energy may include multiple energy carriers; do not relabel it as electricity consumption.
+- `m3` is a volume (1 m3 = 1,000 litres). Recycled water, tap-water consumption, withdrawal, and consumption are distinct indicators even when their units are all cubic metres.
+- `L per 12-inch equivalent wafer mask layer` is a normalized intensity. Its denominator is part of the unit and must be preserved; it is not comparable to an absolute water volume.
+- `t CO2e` is a mass of greenhouse-gas emissions expressed as carbon-dioxide equivalent. Organizational coverage and emissions scope still need to match before comparing totals.
+- `lb CO2e/MWh` is an emissions rate per unit of electricity generated. It is not an emissions total and must not be directly compared with `t CO2e`.
+
+The dashboard offers a dropdown between standardized project units and the source-transcribed original value/unit. The standardized value is useful for consistent storage; the original value supports checking the extraction against the source. Neither choice harmonizes differing metric definitions or reporting boundaries. For comparisons, align the metric, period, unit basis, geography, organizational coverage, lifecycle/reporting boundary, and calculation method. A shared unit alone does not make two records comparable.
+
+Metrics in this list have different scopes and must not be compared or summed as though they were equivalent. In particular, total energy is not electricity alone; recycled water is not water withdrawal or consumption; product-normalized water intensity is not an absolute volume; grid-average output emissions are not a company's purchased-electricity emissions; and EPA electronics-sector totals include activities beyond semiconductor fabrication. A new metric must be added here and to `EXPECTED_UNITS` before the pipeline will accept it.

@@ -1,0 +1,8 @@
+record_id,metric,company,data_year,unit,trusted_present,adversarial_present,manipulation_summary
+OBS001,Total energy consumption,TSMC,2024,MWh,true,true,Energy-related value altered
+OBS002,Water recycled from recovery systems,TSMC,2024,m3,true,false,Environmental feature omitted
+OBS003,Tap water consumption,TSMC,2024,m3,true,false,Environmental feature omitted
+OBS004,Water consumption per 12-inch equivalent wafer mask layer,TSMC,2024,L per 12-inch equivalent wafer mask layer,true,false,Environmental feature omitted
+OBS005,Scope 1 and Scope 2 greenhouse-gas emissions,Samsung Electronics - Device Solutions division,2024,t CO2e,true,true,Human-readable source label removed
+OBS006,Electricity-generation CO2-equivalent output emission rate,Electricity grid - CAMX subregion,2023,lb CO2e/MWh,true,true,
+OBS007,Reported greenhouse-gas emissions,US electronics manufacturing sector,2017,t CO2e,true,true,

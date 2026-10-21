@@ -1,32 +1,16 @@
 # Practical four-week plan
 
-## Current project status
+## Completed project phases
 
-The repository currently contains the Python data pipeline, synthetic demonstration data, integrity and adversarial-copy utilities, tests, and supporting security documentation. The assignment's source-backed research, verified semiconductor-specific dataset, built dashboard, final comparison, report, and presentation remain to be completed. The demonstration CSV must not be represented as verified company data.
+1. **Research and data planning:** The proposal, source plan, data dictionary, five paper reviews, and seven source-checked observations are available. Paper 6 is supplemental dissertation background. The selected observations remain heterogeneous and cannot support an industry-wide estimate or company ranking.
+2. **Threat model and response:** Assets, scenario, risk assessment, defender controls, integrity limitations, and the six-stage incident-response plan are documented. MITRE ATT&CK references are mapped as scenario context only, not as evidence of a real attack.
+3. **Dashboard and adversarial demonstration:** The local dashboard-as-presentation has ten selectable screens for summary, environmental data, units, provenance, reports/studies, threat references, controls, incident response, integrity, and adversarial comparison. Report, metric, year, organization, and unit-basis filters are wired; missing observations are not shown as zero. Five deterministic manipulation events are logged separately from trusted records.
+4. **Power BI preparation:** A repeatable exporter creates 13 import-ready tables containing trusted/adversarial data, source and paper registers, metric guidance, threat references, controls, response steps, hash/validation status, and model-validation results. Power BI Desktop was unavailable, so no native `.pbix`/`.pbip` is claimed.
+5. **Final report and dashboard presentation:** The 31-section report, dashboard-screen demo runbook, and six current-browser screenshots are present. The dashboard is the presentation format per user preference; there is no slide deck.
 
-## Week 1 — Research and data
-- Finalize the research question.
-- Select five relevant peer-reviewed papers.
-- Replace or supplement synthetic examples with documented real sources.
-- Complete the source plan and data dictionary, including semiconductor technology features, units, geography, lifecycle boundaries, reliability, and validation methods.
-- Agree on reporting boundaries and units.
+## Remaining handoff checks
 
-## Week 2 — Threat model and controls
-- Review the threat model and incident-response plan.
-- Run validation and integrity tests.
-- Assign trusted-data ownership and protect the reference manifest in Git.
-- Draw the final data-flow architecture.
-
-## Week 3 — Dashboard and adversarial demonstration
-- Import trusted and adversarial CSVs into Power BI.
-- Build the three report pages.
-- Validate slicers, units, chart filters, and source details.
-- Capture screenshots of the accurate and manipulated views.
-- Complete the manipulation comparison table.
-
-## Week 4 — Report and presentation
-- Run tests and document outcomes.
-- Re-run the pipeline from a clean checkout.
-- Finalize academic citations and limitations.
-- Prepare the live or recorded demo.
-- Submit the report, dashboard, code, data, and evidence required by the instructor.
+- The project owner has certified the five selected papers as eligible. The seven-record source-backed dataset is complete for the declared proof-of-concept scope; do not expand it with unverified or incomparable data. Add records only if the assignment requires broader coverage and suitable sources are reviewed.
+- Final tests passed: 27 tests on Python 3.11 and 3.14 with deprecation warnings treated as errors; Python compilation, `git diff --check`, Power BI export/integrity validation, and fresh Windows and Ubuntu/WSL first-launch validation also passed.
+- macOS and non-x86 CPU/platform combinations were not individually tested. The local service remains loopback-only by design.
+- The interactive browser dashboard fulfills the dashboard requirement. A native Power BI report is optional unless specifically required by the instructor; the CSV export is available as an alternate workflow.

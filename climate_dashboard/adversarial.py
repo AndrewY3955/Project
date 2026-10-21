@@ -1,25 +1,37 @@
 """Create a clearly labeled adversarial copy and log each controlled manipulation."""
 
+import argparse
+from pathlib import Path
+
 import pandas as pd
 
 from climate_dashboard.integrity import write_manifest
 from climate_dashboard.pipeline import OUT_DIR, TRUSTED_FILE, run_pipeline
 
-ADVERSARIAL_FILE = OUT_DIR / "adversarial_data.csv"
-CHANGE_LOG_FILE = OUT_DIR / "adversarial_change_log.csv"
-ADVERSARIAL_MANIFEST = OUT_DIR / "adversarial_manifest.json"
 
+def create_adversarial_copy(
+    trusted_file: str | Path = TRUSTED_FILE,
+    output_dir: str | Path = OUT_DIR,
+) -> pd.DataFrame:
+    trusted_file = Path(trusted_file)
+    output_dir = Path(output_dir)
+    adversarial_file = output_dir / "adversarial_data.csv"
+    change_log_file = output_dir / "adversarial_change_log.csv"
+    adversarial_manifest = output_dir / "adversarial_manifest.json"
 
-def create_adversarial_copy() -> pd.DataFrame:
-    if not TRUSTED_FILE.exists():
+    if not trusted_file.exists() and trusted_file == TRUSTED_FILE:
         run_pipeline()
+    if not trusted_file.exists():
+        raise FileNotFoundError(f"Trusted input dataset not found: {trusted_file}")
 
-    trusted = pd.read_csv(TRUSTED_FILE)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    trusted = pd.read_csv(trusted_file)
     altered = trusted.copy()
     changes = []
+    metrics = altered["metric"].astype("string")
 
-    # Manipulation 1: inflate one synthetic electricity measurement.
-    target = altered.index[altered["metric"] == "Electricity consumption"]
+    # Manipulation 1: inflate an energy-related measurement.
+    target = altered.index[metrics.str.contains("energy|electricity", case=False, regex=True, na=False)]
     if len(target):
         idx = int(target[0])
         old = altered.at[idx, "value"]
@@ -27,17 +39,19 @@ def create_adversarial_copy() -> pd.DataFrame:
         changes.append({
             "change_id": "ADV-001",
             "record_id": altered.at[idx, "record_id"],
-            "manipulation": "Numerical value altered",
+            "manipulation": "Energy-related value altered",
             "field": "value",
             "original_value": old,
             "manipulated_value": altered.at[idx, "value"],
-            "intended_effect": "Make electricity consumption appear higher in the adversarial view",
+            "intended_effect": "Make reported energy use appear higher in the adversarial view",
             "detection_evidence": "Compare row with trusted version and check trusted file hash",
             "defensive_control": "Protected trusted copy, hash verification, and audit trail",
         })
+    else:
+        raise ValueError("Adversarial scenario requires at least one energy- or electricity-related record.")
 
-    # Manipulation 2: remove a source name from a greenhouse-gas record.
-    target = altered.index[altered["metric"] == "Greenhouse-gas emissions"]
+    # Manipulation 2: remove source provenance from an emissions record.
+    target = altered.index[metrics.str.contains("greenhouse|ghg|emission", case=False, regex=True, na=False)]
     if len(target):
         idx = int(target[0])
         old = altered.at[idx, "source_name"]
@@ -45,17 +59,19 @@ def create_adversarial_copy() -> pd.DataFrame:
         changes.append({
             "change_id": "ADV-002",
             "record_id": altered.at[idx, "record_id"],
-            "manipulation": "Source provenance removed",
+            "manipulation": "Human-readable source label removed",
             "field": "source_name",
             "original_value": old,
             "manipulated_value": "",
-            "intended_effect": "Make the value harder to trace to its origin",
+            "intended_effect": "Make the report and publisher less visible while source_url and source_id remain",
             "detection_evidence": "Empty-source validation warning and trusted-version comparison",
-            "defensive_control": "Required provenance fields and change approval",
+            "defensive_control": "Review source metadata and compare against a protected trusted version",
         })
+    else:
+        raise ValueError("Adversarial scenario requires at least one greenhouse-gas or emissions record.")
 
     # Manipulation 3: remove water records to simulate feature omission.
-    water_rows = altered.index[altered["metric"] == "Water consumption"]
+    water_rows = altered.index[metrics.str.contains("water", case=False, na=False)]
     if len(water_rows):
         removed = altered.loc[water_rows]
         for _, row in removed.iterrows():
@@ -71,20 +87,36 @@ def create_adversarial_copy() -> pd.DataFrame:
                 "defensive_control": "Versioned datasets, row-count checks, and required-feature checks",
             })
         altered = altered.drop(index=water_rows)
+    else:
+        raise ValueError("Adversarial scenario requires at least one water-related record.")
 
-    altered.to_csv(ADVERSARIAL_FILE, index=False)
-    pd.DataFrame(changes).to_csv(CHANGE_LOG_FILE, index=False)
+    altered.to_csv(adversarial_file, index=False)
+    pd.DataFrame(changes).to_csv(change_log_file, index=False)
     write_manifest(
-        ADVERSARIAL_FILE,
-        ADVERSARIAL_MANIFEST,
+        adversarial_file,
+        adversarial_manifest,
         purpose="Intentionally manipulated dataset for classroom adversarial demonstration",
     )
     return pd.DataFrame(changes)
 
 
 if __name__ == "__main__":
-    change_log = create_adversarial_copy()
-    print(f"Created adversarial dataset: {ADVERSARIAL_FILE}")
-    print(f"Created change log: {CHANGE_LOG_FILE}")
+    parser = argparse.ArgumentParser(description="Create a separate, logged adversarial dataset copy.")
+    parser.add_argument(
+        "--input",
+        type=Path,
+        default=TRUSTED_FILE,
+        help=f"Trusted normalized CSV (default: {TRUSTED_FILE})",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=OUT_DIR,
+        help=f"Output directory (default: {OUT_DIR})",
+    )
+    args = parser.parse_args()
+    change_log = create_adversarial_copy(args.input, args.output_dir)
+    print(f"Created adversarial dataset: {args.output_dir / 'adversarial_data.csv'}")
+    print(f"Created change log: {args.output_dir / 'adversarial_change_log.csv'}")
     print(f"Documented {len(change_log)} manipulation event(s).")
     print("This is a controlled simulation, not a real attack.")

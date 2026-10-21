@@ -2,6 +2,8 @@
 
 Use this plan when a trusted dataset, integrity reference, pipeline, or dashboard setting changes unexpectedly or when source credibility is in question. Do not use the intentionally manipulated training copy as evidence of a real incident.
 
+For the classroom demonstration, use `data/processed/reviewed/trusted_data.csv` as the trusted baseline and `data/processed/reviewed/adversarial_data.csv` plus `adversarial_change_log.csv` as the intentionally altered branch. Their manifests are integrity references for their respective files, not proof that the source measurements are true or that a real incident occurred.
+
 ## 1. Preparation
 
 - Keep the original user-provided sources, known-good trusted data, and a protected versioned backup.

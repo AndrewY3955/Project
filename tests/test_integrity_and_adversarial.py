@@ -1,6 +1,9 @@
+from hashlib import sha256
+from pathlib import Path
+
 import pandas as pd
 
-from climate_dashboard.adversarial import create_adversarial_copy, ADVERSARIAL_FILE, CHANGE_LOG_FILE
+from climate_dashboard.adversarial import create_adversarial_copy
 from climate_dashboard.integrity import verify_manifest
 from climate_dashboard.pipeline import run_pipeline, TRUSTED_FILE, MANIFEST_FILE, OUT_DIR
 
@@ -26,9 +29,37 @@ def test_tampering_is_detected(tmp_path):
 def test_adversarial_copy_is_separate_and_documented():
     run_pipeline()
     changes = create_adversarial_copy()
-    assert ADVERSARIAL_FILE.exists()
-    assert CHANGE_LOG_FILE.exists()
+    assert (OUT_DIR / "adversarial_data.csv").exists()
+    assert (OUT_DIR / "adversarial_change_log.csv").exists()
     assert len(changes) >= 2
     trusted = pd.read_csv(TRUSTED_FILE)
-    adversarial = pd.read_csv(ADVERSARIAL_FILE)
+    adversarial = pd.read_csv(OUT_DIR / "adversarial_data.csv")
     assert len(adversarial) < len(trusted)
+    ok, _, _ = verify_manifest(OUT_DIR / "adversarial_data.csv", OUT_DIR / "adversarial_manifest.json")
+    assert ok
+
+
+def test_reviewed_adversarial_branch_does_not_modify_trusted_input(tmp_path):
+    intake_file = tmp_path / "observations.csv"
+    intake_file.write_bytes(Path("data/intake/observations_template.csv").read_bytes())
+    trusted_dir = tmp_path / "reviewed"
+    run_pipeline(input_file=intake_file, output_dir=trusted_dir)
+    trusted_file = trusted_dir / "trusted_data.csv"
+    trusted_hash = sha256(trusted_file.read_bytes()).hexdigest()
+    intake_hash = sha256(intake_file.read_bytes()).hexdigest()
+
+    changes = create_adversarial_copy(
+        trusted_file=trusted_file,
+        output_dir=tmp_path / "adversarial",
+    )
+
+    altered = pd.read_csv(tmp_path / "adversarial" / "adversarial_data.csv")
+    log = pd.read_csv(tmp_path / "adversarial" / "adversarial_change_log.csv")
+    adversarial_manifest = tmp_path / "adversarial" / "adversarial_manifest.json"
+    assert {"ADV-001", "ADV-002", "ADV-003"}.issubset(set(log["change_id"]))
+    assert len(altered) < 7
+    assert not altered["metric"].str.contains("water", case=False).any()
+    assert sha256(trusted_file.read_bytes()).hexdigest() == trusted_hash
+    assert sha256(intake_file.read_bytes()).hexdigest() == intake_hash
+    assert len(changes) == len(log)
+    assert verify_manifest(tmp_path / "adversarial" / "adversarial_data.csv", adversarial_manifest)[0]

@@ -1,0 +1,2 @@
+validation_status,validation_error_count,validation_warning_count,trusted_record_count,adversarial_record_count,manipulation_event_count,trusted_sha256,manifest_sha256,trusted_manifest_match,interpretation
+PASS,0,0,7,4,5,383b432ebd13898523dda49494c2761611528c0705d342002afb605377875ef3,383b432ebd13898523dda49494c2761611528c0705d342002afb605377875ef3,true,A matching local hash detects byte changes only relative to a trusted reference; it does not establish source accuracy.

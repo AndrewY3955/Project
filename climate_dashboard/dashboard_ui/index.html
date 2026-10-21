@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A multi-view dashboard for semiconductor climate indicators, source provenance, threat references, and data integrity.">
+    <title>Semiconductor Climate Data Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <p class="eyebrow">Semiconductor technology · climate features · data integrity</p>
+        <h1>Climate-Feature Dashboard</h1>
+        <p class="header-copy">Explore reported environmental data, source reports, research, and security context in separate views.</p>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <aside class="notice" aria-label="Dataset limitation">
+        <strong>Read before comparing:</strong>
+        Each measure has its own unit and reporting boundary. Compare records only when the measure, year, unit basis, geography, organizational scope, and method align. The reviewed observations are not a representative industry sample.
+      </aside>
+
+      <div class="screen-picker">
+        <label for="screen-selector">Dashboard screen
+          <select id="screen-selector">
+            <option value="view-summary">Project summary</option>
+            <option value="view-overview">Environmental data</option>
+            <option value="view-measures">Measure guide</option>
+            <option value="view-records">Records &amp; provenance</option>
+            <option value="view-context">Reports &amp; studies</option>
+            <option value="view-threats">Threat intelligence</option>
+            <option value="view-controls">Security controls</option>
+            <option value="view-response">Incident response</option>
+            <option value="view-integrity">Integrity checks</option>
+            <option value="view-comparison">Adversarial comparison</option>
+          </select>
+        </label>
+      </div>
+
+      <p id="integrity-alert" class="error-message" role="alert" hidden></p>
+      <p id="load-error" class="error-message" role="alert" hidden></p>
+      <p id="loading-message" class="loading-message" role="status">Loading reviewed dashboard data…</p>
+
+      <section class="view-panel" id="view-summary" aria-label="Project summary">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Presentation overview</p>
+            <h2>Project summary</h2>
+          </div>
+          <span class="status-pill status-reported">Reviewed source-backed dataset</span>
+        </div>
+        <p id="project-question" class="section-copy"></p>
+        <div class="summary-grid" id="executive-summary"></div>
+        <div class="dashboard-columns">
+          <article class="table-card">
+            <h3>Observation coverage</h3>
+            <p class="chart-note">Counts describe records, not totals or performance scores.</p>
+            <div id="coverage-summary" class="coverage-grid"></div>
+          </article>
+          <article class="table-card">
+            <h3>Executive readout</h3>
+            <div id="executive-readout" class="text-stack"></div>
+          </article>
+        </div>
+        <aside class="notice notice-subtle">
+          <strong>Threat-intelligence scope:</strong>
+          MITRE ATT&amp;CK mappings are scenario references only. No live threat feed, indicator of compromise, observed intrusion, or actor attribution is included.
+        </aside>
+      </section>
+
+      <section class="view-panel" id="view-overview" aria-label="Environmental data" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Source-reported environmental indicators</p>
+            <h2>Environmental data</h2>
+          </div>
+          <span class="status-pill status-reported">Trusted branch</span>
+        </div>
+        <p class="section-copy">Choose a source report, measure, year, and organization. A registered report without a reviewed observation will show no records rather than an invented value.</p>
+        <div class="filters filters-wide">
+          <label>Source report
+            <select id="report-filter" disabled></select>
+          </label>
+          <label>Measure
+            <select id="metric-filter" disabled></select>
+          </label>
+          <label>Year
+            <select id="year-filter" disabled></select>
+          </label>
+          <label>Organization
+            <select id="organization-filter" disabled></select>
+          </label>
+          <label>Display values as
+            <select id="overview-value-basis" disabled>
+              <option value="normalized">Standardized project units</option>
+              <option value="source">Original source units</option>
+            </select>
+          </label>
+        </div>
+        <aside id="overview-measure-guide" class="measure-guide" aria-live="polite"></aside>
+        <div class="summary-grid" id="overview-summary"></div>
+        <div class="chart-card">
+          <h3 id="chart-title">Reported values</h3>
+          <p id="chart-note" class="chart-note">Bars are scaled within the selected measure only. No aggregation is performed.</p>
+          <div id="bar-chart" class="bar-chart" aria-live="polite"></div>
+        </div>
+        <div class="table-card">
+          <h3>Records matching these filters</h3>
+          <div class="table-scroll"><table id="overview-table"></table></div>
+        </div>
+      </section>
+
+      <section class="view-panel" id="view-measures" aria-label="Measure guide" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Definitions, units, and scope</p>
+            <h2>Measure guide</h2>
+          </div>
+        </div>
+        <p class="section-copy">Select a measure to review its definition and comparison warnings. The inventory shows one record per measure; unlike measures are not combined.</p>
+        <label>Measure
+          <select id="guide-metric" disabled></select>
+        </label>
+        <aside id="guide-measure-detail" class="measure-guide" aria-live="polite"></aside>
+        <div class="table-card">
+          <h3>What the reviewed dataset contains</h3>
+          <div class="table-scroll"><table id="measure-inventory-table"></table></div>
+        </div>
+      </section>
+
+      <section class="view-panel" id="view-records" aria-label="Records and provenance" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Record-level source trail</p>
+            <h2>Records &amp; provenance</h2>
+          </div>
+        </div>
+        <p class="section-copy">Filter by report and search the source-backed records. Original values, units, conversion notes, boundaries, and limitations remain available.</p>
+        <div class="filters">
+          <label>Source report
+            <select id="records-source-filter" disabled></select>
+          </label>
+          <label class="search-label">Search records
+            <input id="record-search" type="search" placeholder="Organization, metric, source, geography…" autocomplete="off">
+          </label>
+        </div>
+        <div class="table-card">
+          <div class="table-scroll"><table id="records-table"></table></div>
+        </div>
+      </section>
+
+      <section class="view-panel" id="view-context" aria-label="Reports and studies" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Evidence library</p>
+            <h2>Reports &amp; studies</h2>
+          </div>
+        </div>
+        <div class="filters">
+          <label>Information type
+            <select id="context-type-filter" disabled>
+              <option value="sources">Source reports</option>
+              <option value="papers">Research papers</option>
+            </select>
+          </label>
+          <label id="context-item-label">Select a report
+            <select id="context-item-filter" disabled></select>
+          </label>
+        </div>
+        <div id="context-detail" class="context-detail"></div>
+        <div class="table-card">
+          <h3 id="context-table-title">Registered sources</h3>
+          <div class="table-scroll"><table id="context-table"></table></div>
+        </div>
+        <div class="table-card">
+          <h3 id="source-observations-title">Reviewed observations from this report</h3>
+          <div class="table-scroll"><table id="source-observations"></table></div>
+        </div>
+      </section>
+
+      <section class="view-panel" id="view-threats" aria-label="Threat intelligence" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Public defensive reference mapping</p>
+            <h2>Threat intelligence</h2>
+          </div>
+          <span class="status-pill status-warning">Scenario mapping · no observed activity</span>
+        </div>
+        <p class="section-copy">Select a technique to see why it relates to this data-integrity scenario and whether it was exercised. These ATT&amp;CK references are not a live threat feed or actor attribution.</p>
+        <label>Threat reference
+          <select id="threat-technique-filter" disabled></select>
+        </label>
+        <div id="threat-detail" class="context-detail"></div>
+        <div class="table-card">
+          <h3>Scenario reference inventory</h3>
+          <div class="table-scroll"><table id="threat-table"></table></div>
+        </div>
+      </section>
+
+      <section class="view-panel" id="view-controls" aria-label="Security controls" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Implemented versus recommended</p>
+            <h2>Security controls</h2>
+          </div>
+        </div>
+        <p class="section-copy">Filter controls by deployment state. Local prototype features are distinguished from controls that require a shared identity or hosting platform.</p>
+        <label>Control status
+          <select id="control-status-filter" disabled></select>
+        </label>
+        <div id="control-summary" class="summary-grid"></div>
+        <div id="control-cards" class="context-card-grid"></div>
+      </section>
+
+      <section class="view-panel" id="view-response" aria-label="Incident response" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Six-stage response workflow</p>
+            <h2>Incident response</h2>
+          </div>
+        </div>
+        <p class="section-copy">Choose a stage to review its objective, actions, and evidence-based exit criteria. Preserve evidence before containment or repair.</p>
+        <label>Response stage
+          <select id="response-stage-filter" disabled></select>
+        </label>
+        <div id="response-stage-list" class="stage-list"></div>
+        <div id="response-detail" class="context-detail"></div>
+      </section>
+
+      <section class="view-panel" id="view-integrity" aria-label="Integrity checks" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Validation, hash, and export checks</p>
+            <h2>Integrity checks</h2>
+          </div>
+        </div>
+        <div id="integrity-summary" class="integrity-grid"></div>
+        <div class="table-card">
+          <h3>Pipeline validation details</h3>
+          <div id="validation-details"></div>
+        </div>
+        <div class="table-card">
+          <h3>Power BI context-pack validation</h3>
+          <div class="table-scroll"><table id="pack-validation-table"></table></div>
+        </div>
+        <aside class="notice notice-subtle">
+          <strong>Integrity is not accuracy.</strong>
+          A matching hash compares file bytes with the referenced manifest. It does not authenticate the publisher, prove the source measurement, or prevent tampering when both files share write permissions.
+        </aside>
+      </section>
+
+      <section class="view-panel" id="view-comparison" aria-label="Adversarial comparison" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Intentional classroom simulation</p>
+            <h2>Adversarial comparison</h2>
+          </div>
+          <span class="status-pill status-warning">Not real incident evidence</span>
+        </div>
+        <p class="section-copy">Select a source report and measure. The manipulated copy is separate from the trusted branch; missing records are shown as removed, never as zero.</p>
+        <div class="filters filters-wide">
+          <label>Source report
+            <select id="comparison-source-filter" disabled></select>
+          </label>
+          <label>Measure
+            <select id="comparison-metric" disabled></select>
+          </label>
+          <label>Year
+            <select id="comparison-year" disabled></select>
+          </label>
+          <label>Display values as
+            <select id="comparison-value-basis" disabled>
+              <option value="normalized">Standardized project units</option>
+              <option value="source">Original source units</option>
+            </select>
+          </label>
+        </div>
+        <aside id="comparison-measure-guide" class="measure-guide" aria-live="polite"></aside>
+        <div class="table-card">
+          <h3>Trusted versus simulated records</h3>
+          <div id="comparison-records" class="comparison-records"></div>
+        </div>
+        <div class="table-card">
+          <h3>Manipulation event log</h3>
+          <div id="change-log" class="change-log"></div>
+        </div>
+      </section>
+
+      <footer class="page-footer">
+        <p>Reported observations are not independently measured by this project. Synthetic inputs and simulated changes are labeled and kept separate. Review each record's source and limitations before interpretation.</p>
+      </footer>
+    </main>
+  </body>
+</html>
