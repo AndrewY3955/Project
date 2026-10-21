@@ -33,7 +33,6 @@ The dashboard is for local use on the same device; it does not accept connection
 - Ten-screen browser dashboard with filters for reviewed environmental observations, sources, reports, research, security controls, integrity, and a controlled adversarial comparison.
 - Seven source-checked observations for a bounded proof of concept; they are not representative of the semiconductor industry.
 - A separate synthetic test dataset. Synthetic and simulated values are labeled and are not research findings.
-- A 13-table CSV export for optional use with Power BI. A native `.pbix`/`.pbip` report is not included or required unless your instructor asks for one.
 
 ## Tests
 
