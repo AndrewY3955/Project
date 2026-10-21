@@ -6,24 +6,24 @@ From a fresh clone, no profile setup is required. Run the platform launcher from
 
 ```powershell
 # Windows PowerShell
-.\run_dashboard.ps1
+.\run.ps1
 ```
 
 ```sh
 # macOS or Linux
-sh ./run.sh
+./run
 ```
 
-The launcher creates a project-local `.venv`, installs runtime dependencies from `requirements.txt` if pandas is missing, regenerates the normalized reviewed dataset and separate controlled adversarial copy, and starts the server. First launch requires Python 3.10+ and internet access or a local package cache with compatible wheels. No existing generated files under `data/processed/` are required.
+In Windows Command Prompt, type `run` (or `run.cmd`) from the repository root. The launcher creates a project-local `.venv`, installs runtime dependencies from `requirements.txt` if pandas is missing, regenerates the normalized reviewed dataset and separate controlled adversarial copy, and starts the server. First launch requires Python 3.10+ and internet access or a local package cache with compatible wheels. No existing generated files under `data/processed/` are required.
 
-The optional bare `run` command is a per-user shell shortcut that searches upward from the current directory for this project's launcher. Install it only if you want that shorthand:
+For a bare `run` command in PowerShell, Bash, or Zsh, install the optional per-user shell shortcut. A fresh clone cannot install shell commands into a user's profile automatically:
 
 ```powershell
 .\install_run_command.ps1
 # macOS/Linux: sh ./install_run_command.sh
 ```
 
-After installation, open a new terminal (or load the profile) and enter `run` from inside the repository. Stop the foreground server with `Ctrl+C`. On Windows, use `.\run_dashboard.ps1 -Port 8766 -NoBrowser` for a custom port or no browser. If the local PowerShell policy blocks scripts, invoke it with `powershell -ExecutionPolicy Bypass -File .\run_dashboard.ps1`.
+After installation, open a new terminal (or load the profile) and enter `run` from inside the repository. Stop the foreground server with `Ctrl+C`. On Windows, use `.\run.ps1 -Port 8766 -NoBrowser` for a custom port or no browser. If the local PowerShell policy blocks scripts, invoke it with `powershell -ExecutionPolicy Bypass -File .\run.ps1`.
 
 Both launch paths require Python 3.10 or later. They create `.venv` if needed and install the runtime dependencies in `requirements.txt` only when pandas is missing. An existing `.venv` is reused; an unsupported Python version is reported rather than silently replacing the environment. Tests are a development-only dependency in `requirements-dev.txt`. First launch needs internet access to install pandas unless it is already installed or available from a local package cache. Minimal Debian/Ubuntu installations may need the operating-system `python3-venv` package before the launcher can create `.venv`.
 

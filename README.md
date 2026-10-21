@@ -57,15 +57,15 @@ No manual virtual-environment setup, test installation, Power BI Desktop, or gen
 
 ```powershell
 # Windows PowerShell
-.\run_dashboard.ps1
+.\run.ps1
 ```
 
 ```sh
 # macOS or Linux
-sh ./run.sh
+./run
 ```
 
-The launcher creates a project-local `.venv`, installs the runtime dependencies from `requirements.txt` if needed, prepares the reviewed dashboard data and Power BI CSV pack, and starts the browser dashboard. Python 3.10+ and internet access (or a local package cache containing compatible dependencies) are required on first launch. The optional bare `run` command is a per-user shell shortcut; install it with `.\install_run_command.ps1` on Windows or `sh ./install_run_command.sh` on macOS/Linux. The direct launch commands above work without installing that shortcut.
+The launcher creates a project-local `.venv`, installs the runtime dependencies from `requirements.txt` if needed, prepares the reviewed dashboard data and Power BI CSV pack, and starts the browser dashboard. Python 3.10+ and internet access (or a local package cache containing compatible dependencies) are required on first launch. The root `run` script is executable on macOS/Linux; on Windows PowerShell, use `.\run.ps1`, and in Command Prompt use `run` or `run.cmd`. Shells intentionally do not run commands from the current directory by bare name in every configuration, so a universal bare `run` command requires an optional per-user profile shortcut.
 
 ### Optional development/test environment
 
@@ -122,18 +122,21 @@ This creates a manipulated copy, a change log, and a manifest under `data/proces
 
 ## Run the local browser dashboard
 
-From any directory inside the repository, the optional `run` shortcut finds and invokes the project launcher. The shortcut is installed in the current user's PowerShell profile. To activate it in a terminal that was already open, run `. $PROFILE` once or reopen that terminal. A fresh clone does not install this profile shortcut automatically; use the direct project launcher from the repository root unless you choose to install it:
+From the repository root, use the platform launcher directly:
 
 ```powershell
-.\install_run_command.ps1
-run
-# or, without the profile shortcut:
-.\run_dashboard.ps1
+# Windows PowerShell
+.\run.ps1
 ```
 
-The launcher regenerates the reviewed trusted dataset, creates a separate adversarial copy, then starts the app and opens the browser. Stop it with `Ctrl+C`. If PowerShell blocks local scripts, use `powershell -ExecutionPolicy Bypass -File .\run_dashboard.ps1`. To choose a different port or keep the browser closed, run `.\run_dashboard.ps1 -Port 8766 -NoBrowser`.
+```sh
+# macOS or Linux
+./run
+```
 
-On macOS/Linux, run `sh ./run.sh` from the cloned repository. To install the equivalent bare `run` shell function, run `sh ./install_run_command.sh`, open a new terminal, `cd` into the clone, and enter `run`.
+The launcher regenerates the reviewed trusted dataset, creates a separate adversarial copy, then starts the app and opens the browser. Stop it with `Ctrl+C`. On Windows, use `.\run.ps1 -Port 8766 -NoBrowser` to choose another port or keep the browser closed. If the PowerShell policy blocks scripts, use `powershell -ExecutionPolicy Bypass -File .\run.ps1`.
+
+For a bare `run` command from inside the repository, install the optional per-user shell shortcut using `.\install_run_command.ps1` on Windows PowerShell or `sh ./install_run_command.sh` on macOS/Linux. Open a new terminal or reload the profile afterward.
 
 Both launchers require Python 3.10 or newer. Windows selects the newest supported interpreter registered with the Python Launcher; macOS/Linux uses `python3` (or `python`) and checks its version. They create a project-local `.venv` when needed, install the runtime `requirements.txt` only when pandas is missing, then perform the complete data-preparation and dashboard run. The lightweight dashboard module avoids importing pandas until preparation starts; the trusted pipeline and adversarial generator run in one Python process so pandas is loaded once. The app remains local to `127.0.0.1`.
 
