@@ -51,6 +51,24 @@ Python modules, test files, and Markdown documents use lowercase `snake_case` na
 
 The launchers and responsive UI were exercised on Windows and Ubuntu/WSL. Other operating systems, CPU architectures, managed Python distributions, and browser versions are not individually certified; they need a working Python 3.10+ installation and compatible pandas wheel. On minimal Debian/Ubuntu installs, the `python3-venv` OS package may also be needed before the first Linux launch.
 
+### Quick start from a fresh clone
+
+No manual virtual-environment setup, test installation, Power BI Desktop, or generated `data/processed/` files are needed to launch the dashboard. From the cloned repository root, run the platform launcher:
+
+```powershell
+# Windows PowerShell
+.\run_dashboard.ps1
+```
+
+```sh
+# macOS or Linux
+sh ./run.sh
+```
+
+The launcher creates a project-local `.venv`, installs the runtime dependencies from `requirements.txt` if needed, prepares the reviewed dashboard data and Power BI CSV pack, and starts the browser dashboard. Python 3.10+ and internet access (or a local package cache containing compatible dependencies) are required on first launch. The optional bare `run` command is a per-user shell shortcut; install it with `.\install_run_command.ps1` on Windows or `sh ./install_run_command.sh` on macOS/Linux. The direct launch commands above work without installing that shortcut.
+
+### Optional development/test environment
+
 From the project root in PowerShell:
 
 ```powershell
@@ -104,7 +122,7 @@ This creates a manipulated copy, a change log, and a manifest under `data/proces
 
 ## Run the local browser dashboard
 
-Recommended launch from any directory in PowerShell: type the single command `run`. The shortcut is installed in this Windows user's PowerShell profile. To activate it in a terminal that was already open, run `. $PROFILE` once or reopen that terminal. If you do not have the shortcut installed, use the project launcher directly from the repository root:
+From any directory inside the repository, the optional `run` shortcut finds and invokes the project launcher. The shortcut is installed in the current user's PowerShell profile. To activate it in a terminal that was already open, run `. $PROFILE` once or reopen that terminal. A fresh clone does not install this profile shortcut automatically; use the direct project launcher from the repository root unless you choose to install it:
 
 ```powershell
 .\install_run_command.ps1
