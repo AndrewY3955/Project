@@ -14,7 +14,7 @@
 | `source_url` | Text | URL or citation locator for the source | Document and validate before using real data |
 | `source_type` | Text | Source type | Examples: synthetic example, company report, government dataset, peer-reviewed paper |
 | `lifecycle_boundary` | Text | Boundary represented by the value | Must be documented before comparisons |
-| `data_status` | Text | Reported/estimated/assumption/derived/synthetic label | Must be an allowed status |
+| `data_status` | Text | Record status: `reported`, `estimated`, `assumption`, `derived`, or `synthetic_demo` | Must match an allowed status in `climate_dashboard/schema.py` |
 | `limitation` | Text | Known caveat for the measurement | Blank generates warning |
 | `calculation_method` | Text | Method used for derived calculations | Document formula and input sources if derived |
 | `last_validated` | Date-like text | Date of last source/data review | Update during validation |
@@ -45,4 +45,4 @@ These are the project's initial unit conventions, not a claim that all source da
 
 The dashboard offers a dropdown between standardized project units and the source-transcribed original value/unit. The standardized value is useful for consistent storage; the original value supports checking the extraction against the source. Neither choice harmonizes differing metric definitions or reporting boundaries. For comparisons, align the metric, period, unit basis, geography, organizational coverage, lifecycle/reporting boundary, and calculation method. A shared unit alone does not make two records comparable.
 
-Metrics in this list have different scopes and must not be compared or summed as though they were equivalent. In particular, total energy is not electricity alone; recycled water is not water withdrawal or consumption; product-normalized water intensity is not an absolute volume; grid-average output emissions are not a company's purchased-electricity emissions; and EPA electronics-sector totals include activities beyond semiconductor fabrication. A new metric must be added here and to `EXPECTED_UNITS` before the pipeline will accept it.
+Metrics in this list have different scopes and must not be compared or summed as though they were equivalent. In particular, total energy is not electricity alone; recycled water is not water withdrawal or consumption; product-normalized water intensity is not an absolute volume; grid-average output emissions are not a company's purchased-electricity emissions; and EPA electronics-sector totals include activities beyond semiconductor fabrication. A new metric must be added here and to `EXPECTED_UNITS` in `climate_dashboard/schema.py` before the pipeline will accept it.

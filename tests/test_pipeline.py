@@ -27,7 +27,7 @@ def test_pipeline_accepts_shuffled_columns_and_exports_canonical_order(tmp_path)
     df["custom_note"] = "Keep this column"
     df = df[df.columns[::-1]]
     df.columns = [f" {column} " for column in df.columns]
-    df.rename(columns={" record_id ": "\ufeff record_id "}, inplace=True)
+    df = df.rename(columns={" record_id ": "\ufeff record_id "})
 
     input_file = tmp_path / "input.csv"
     output_dir = tmp_path / "processed"
