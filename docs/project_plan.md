@@ -1,16 +1,32 @@
-# Practical four-week plan
+# Project Plan and Status
 
-## Completed project phases
+The project has progressed from planning to a working proof of concept. This document summarizes completed work and limitations; detailed methods are in the linked guides and final report.
 
-1. **Research and data planning:** The proposal, source plan, data dictionary, five paper reviews, and seven source-checked observations are available. Paper 6 is supplemental dissertation background. The selected observations remain heterogeneous and cannot support an industry-wide estimate or company ranking.
-2. **Threat model and response:** Assets, scenario, risk assessment, defender controls, integrity limitations, and the six-stage incident-response plan are documented. MITRE ATT&CK references are mapped as scenario context only, not as evidence of a real attack.
-3. **Dashboard and adversarial demonstration:** The local dashboard-as-presentation has ten selectable screens for summary, environmental data, units, provenance, reports/studies, threat references, controls, incident response, integrity, and adversarial comparison. Report, metric, year, organization, and unit-basis filters are wired; missing observations are not shown as zero. Five deterministic manipulation events are logged separately from trusted records.
-4. **Power BI preparation:** A repeatable exporter creates 13 import-ready tables containing trusted/adversarial data, source and paper registers, metric guidance, threat references, controls, response steps, hash/validation status, and model-validation results. Power BI Desktop was unavailable, so no native `.pbix`/`.pbip` is claimed.
-5. **Final report and dashboard presentation:** The 31-section report, dashboard-screen demo runbook, and six current-browser screenshots are present. The dashboard is the presentation format per user preference; there is no slide deck.
+## Completed
 
-## Remaining handoff checks
+1. **Research and data:** Five academic papers reviewed and seven source-checked observations documented. This limited source set cannot support an industry-wide estimate or company ranking.
+2. **Threat model and response:** Risks, controls, integrity limitations, and a six-stage incident-response process documented. MITRE ATT&CK references provide scenario context only; they are not evidence of a real attack.
+3. **Browser dashboard:** Ten views cover the project summary, environmental data, metric guidance, provenance, reports/studies, threat references, controls, incident response, integrity, and adversarial comparison.
+4. **Controlled manipulation:** Five logged events demonstrate a changed energy value, a blanked source label, and three removed water records. Simulated data remain separate from reviewed observations.
+5. **Power BI export:** A repeatable exporter creates 13 CSV tables with observation, source, research, security, response, and validation context. A native Power BI report has not been created.
+6. **Reporting and demo:** The final report and dashboard walkthrough are documented. The browser dashboard is the presentation format; there is no separate slide deck.
 
-- The project owner has certified the five selected papers as eligible. The seven-record source-backed dataset is complete for the declared proof-of-concept scope; do not expand it with unverified or incomparable data. Add records only if the assignment requires broader coverage and suitable sources are reviewed.
-- Final tests passed: 27 tests on Python 3.11 and 3.14 with deprecation warnings treated as errors; Python compilation, `git diff --check`, Power BI export/integrity validation, and fresh Windows and Ubuntu/WSL first-launch validation also passed.
-- macOS and non-x86 CPU/platform combinations were not individually tested. The local service remains loopback-only by design.
-- The interactive browser dashboard fulfills the dashboard requirement. A native Power BI report is optional unless specifically required by the instructor; the CSV export is available as an alternate workflow.
+## Validation and limits
+
+The project records successful checks for the test suite, Python compilation, data export, integrity validation, and fresh launch on Windows and Ubuntu/WSL. macOS and other CPU/platform combinations have not been individually verified. The local service binds to loopback and is not an enterprise-secured deployment.
+
+## Handoff notes
+
+- Keep the five-paper eligibility qualification: paper selection was owner-certified, not an independent audit of every journal's review policy.
+- Keep the seven observations within the declared proof-of-concept scope; add records only when suitable sources and comparable definitions have been reviewed.
+- Never present synthetic or manipulated data as research findings.
+- Confirm the changed-file list and documentation links before publishing.
+
+## Key references
+
+- [Final report](final_report.md)
+- [Dashboard guide](dashboard_local.md)
+- [Demo runbook](demo_runbook.md)
+- [Requirement traceability](requirement_traceability.md)
+- [Data-source plan](data_source_plan.md)
+- [Power BI setup](power_bi_setup.md)
