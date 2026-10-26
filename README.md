@@ -1,74 +1,64 @@
 # Semiconductor Climate Data Dashboard
 
-A local dashboard and research project exploring environmental data, source integrity, and controlled data manipulation in the semiconductor sector.
+A local, source-aware dashboard that explores semiconductor-related environmental data and demonstrates how data manipulation can mislead users.
 
-## Project overview
+## Purpose
 
-The project examines how reported semiconductor-related energy, water, and greenhouse-gas indicators can be presented without implying that different sources are directly comparable. It also demonstrates how a changed value, obscured source label, or removed record can affect interpretation.
+The project presents selected energy, water, and greenhouse-gas observations with their sources, units, years, geography, boundaries, and limitations. A separate, intentionally altered dataset demonstrates why data provenance and integrity checks matter.
 
-The project is a classroom proof of concept focused on transparent reporting and data integrity. Its seven source-checked observations are not representative of the semiconductor industry and do not support an industry-wide footprint estimate or company ranking.
+This is a classroom proof of concept—not a complete industry footprint or company-ranking tool.
 
-## Week 1 deliverables
+## Features
 
-The Week 1 report summarizes the project purpose, research question, environmental features, literature foundation, data-source plan, and initial data dictionary.
-
-- [Week 1 deliverables report](docs/week1_deliverables.md)
-- [Final project report](docs/final_report.md)
-- [Literature review](docs/literature_review.md)
-- [Data-source plan](docs/data_source_plan.md)
-- [Data dictionary](docs/data_dictionary.md)
+- Environmental observations with source and scope details.
+- Metric guide and record-level provenance.
+- Data validation and SHA-256 integrity checks.
+- Controlled comparison showing a changed energy value, a blanked source label, and removed water records.
+- Research, security-control, threat-reference, and incident-response views.
+- A Power BI-ready CSV model for optional import.
 
 ## Run the dashboard
 
-Clone the repository, open a terminal **in the project folder**, and run the command for your terminal:
+You need **Python 3.10 or newer**. From the repository root, run:
 
-| Terminal | Command |
-|---|---|
-| Windows PowerShell | \`.\run.ps1\` |
-| Windows Command Prompt | \`run\` |
-| macOS or Linux | \`./run\` |
+| Platform | Command |
+| --- | --- |
+| Windows PowerShell | `.\run.ps1` |
+| Windows Command Prompt | `run.cmd` |
+| macOS or Linux | `./run` |
 
-The launcher prepares the dashboard data, starts the local server, and opens your browser. First launch requires **Python 3.10 or newer** and internet access (or a local package cache) to install dependencies. You do not need to install Power BI Desktop or create generated data files first.
+The launcher prepares the data, starts the local server, and opens the dashboard. First launch may need internet access to install dependencies. Stop the server with **Ctrl+C**.
 
-To type bare \`run\` in PowerShell, Bash, or Zsh, install the optional shortcut once from the project folder:
+The dashboard is local-only and is intended for use in a browser on the same computer. See the [dashboard guide](docs/dashboard_local.md) for troubleshooting and optional shell shortcuts.
 
-\`\`\`powershell
-.\install_run_command.ps1
-\`\`\`
+## Data and limitations
 
-\`\`\`sh
-sh ./install_run_command.sh
-\`\`\`
+The reviewed dataset contains **seven source-checked observations** from company reports and US EPA sources. The observations use different years, geographies, reporting boundaries, and definitions; they cannot support an industry-wide estimate, trend, or company ranking.
 
-Open a new terminal afterward, go to the project folder, and type \`run\`. In Command Prompt, \`run\` works directly from the project folder without installing the shortcut.
+Synthetic test data and manipulated records are separate from the reviewed observations and are not research findings. Validation and a matching local hash help check workflow consistency and file integrity against a reference; they do not prove that source claims are true or complete.
 
-The dashboard is for local use on the same device; it does not accept connections from other devices on your network.
+The project includes a **Power BI import-ready CSV model**, not a completed native `.pbix` or `.pbip` report. The browser dashboard is the primary interactive dashboard.
 
-## Project contents
+## Repository guide
 
-- Ten-screen browser dashboard with filters for reviewed environmental observations, sources, reports, research, security controls, integrity, and a controlled adversarial comparison.
-- Seven source-checked observations covering selected company-reported energy and water measures, company-reported greenhouse-gas emissions, a regional electricity-generation factor, and a broader electronics-manufacturing sector total.
-- Data validation and integrity documentation, including source provenance, metric-unit checks, and a SHA-256 reference.
-- A separate synthetic test dataset. Synthetic and simulated values are labeled and are not research findings.
-- A Power BI import-ready CSV model. This is not a completed native Power BI report.
-
-Different metrics have different years, geographies, organizational boundaries, and definitions. The dashboard is designed to make those differences visible rather than combine unlike values.
+- `climate_dashboard/` — dashboard and data-processing code
+- `data/intake/` — source and observation registers
+- `data/powerbi/` — generated Power BI CSV tables
+- [Week 1 summary](docs/week1_deliverables.md)
+- [Final report and references](docs/final_report.md)
+- [Literature review](docs/literature_review.md)
+- [Data-source plan](docs/data_source_plan.md)
+- [Data dictionary](docs/data_dictionary.md)
+- [Dashboard setup and views](docs/dashboard_local.md)
+- [System architecture](docs/system_architecture.md)
+- [Threat model](docs/threat_model.md) and [incident response](docs/incident_response.md)
+- [Optional Power BI instructions](docs/power_bi_setup.md)
 
 ## Tests
 
-Install development dependencies and run the test suite:
+Install development dependencies and run the tests:
 
-\`\`\`powershell
+```powershell
 python -m pip install -r requirements-dev.txt
 python -m pytest
-\`\`\`
-
-## Documentation
-
-- [Week 1 deliverables report](docs/week1_deliverables.md)
-- [Final project report](docs/final_report.md)
-- [Requirement traceability](docs/requirement_traceability.md)
-- [Dashboard guide](docs/dashboard_local.md)
-- [Demo runbook](docs/demo_runbook.md)
-- [Optional Power BI setup](docs/power_bi_setup.md)
-- [Data dictionary](docs/data_dictionary.md)
+```
