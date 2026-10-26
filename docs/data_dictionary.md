@@ -14,7 +14,7 @@
 | `source_url` | Text | URL or citation locator for the source | Document and validate before using real data |
 | `source_type` | Text | Source type | Examples: synthetic example, company report, government dataset, peer-reviewed paper |
 | `lifecycle_boundary` | Text | Boundary represented by the value | Must be documented before comparisons |
-| `data_status` | Text | Record status: `reported`, `estimated`, `assumption`, `derived`, or `synthetic_demo` | Must match an allowed status in `schema.py` |
+| `data_status` | Text | Record status: `reported`, `estimated`, `assumption`, `derived`, or `synthetic_demo` | Must match an allowed status in `climate_dashboard/schema.py` |
 | `limitation` | Text | Known caveat for the measurement | Blank generates warning |
 | `calculation_method` | Text | Method used for derived calculations | Document formula and input sources if derived |
 | `last_validated` | Date-like text | Date of last source/data review | Update during validation |
