@@ -24,23 +24,23 @@ Clone the repository, open a terminal **in the project folder**, and run the com
 
 | Terminal | Command |
 |---|---|
-| Windows PowerShell | `.\\run.ps1` |
-| Windows Command Prompt | `run` |
-| macOS or Linux | `./run` |
+| Windows PowerShell | \`.\run.ps1\` |
+| Windows Command Prompt | \`run\` |
+| macOS or Linux | \`./run\` |
 
 The launcher prepares the dashboard data, starts the local server, and opens your browser. First launch requires **Python 3.10 or newer** and internet access (or a local package cache) to install dependencies. You do not need to install Power BI Desktop or create generated data files first.
 
-To type bare `run` in PowerShell, Bash, or Zsh, install the optional shortcut once from the project folder:
+To type bare \`run\` in PowerShell, Bash, or Zsh, install the optional shortcut once from the project folder:
 
-```powershell
-.\\install_run_command.ps1
-```
+\`\`\`powershell
+.\install_run_command.ps1
+\`\`\`
 
-```sh
+\`\`\`sh
 sh ./install_run_command.sh
-```
+\`\`\`
 
-Open a new terminal afterward, go to the project folder, and type `run`. In Command Prompt, `run` works directly from the project folder without installing the shortcut.
+Open a new terminal afterward, go to the project folder, and type \`run\`. In Command Prompt, \`run\` works directly from the project folder without installing the shortcut.
 
 The dashboard is for local use on the same device; it does not accept connections from other devices on your network.
 
@@ -58,10 +58,10 @@ Different metrics have different years, geographies, organizational boundaries, 
 
 Install development dependencies and run the test suite:
 
-```powershell
+\`\`\`powershell
 python -m pip install -r requirements-dev.txt
 python -m pytest
-```
+\`\`\`
 
 ## Documentation
 
