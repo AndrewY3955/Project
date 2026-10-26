@@ -1,60 +1,48 @@
-# Data-source plan
+# Data-Source Plan
 
-## Purpose and selection
+## Purpose and scope
 
-This plan defines the evidence currently available for the dashboard. Sources were selected to demonstrate reported semiconductor-company operational measures, a regional grid factor, and a U.S. electronics-manufacturing sector total. The dataset is a small proof of workflow, not a representative sample of semiconductor manufacturers or a consistent comparative panel.
+The dataset demonstrates how to preserve provenance and interpret selected semiconductor-related environmental measures. It is a small proof of concept, not a representative sample or a consistent company comparison.
 
-## Resolved feature and dataset scope
+The seven reviewed observations cover energy, water recycling and consumption, wafer-normalized water intensity, organizational GHG emissions, a regional electricity-generation factor, and a broader electronics-manufacturing sector total. The five reviewed papers provide research context; study-specific figures are not mixed into the observation table.
 
-The assignment lists possible features rather than requiring every feature or a minimum record count. This project therefore uses a bounded evidence set: reported energy and water measures, wafer-normalized water intensity, reported organizational GHG emissions, and contextual grid and electronics-sector indicators. The five reviewed papers add evidence about process nodes, mask layers, process inputs, manufacturing intensity, and water-scarcity geography, but those study-specific values are not mixed into the seven-record observation table.
+Process-gas inventories, water-scarcity scores, packaging impacts, facility-level comparisons, and comparable historical company series remain outside the measured dataset because a sufficiently reviewed and consistently scoped record set is not available. No values are invented to fill gaps.
 
-Packaging materials, process-gas inventories, water-scarcity scores, facility-level comparisons, and comparable historical company series remain outside the measured dataset because the supplied sources do not provide a sufficiently reviewed, consistently scoped record set for them. This is a documented scope limit, not a claim that those impacts are unimportant. No new values are estimated or inferred to fill these gaps. The seven records are sufficient for the project's provenance, interpretation, and controlled-manipulation demonstration, but not for industry-wide conclusions, trends, or company rankings.
+## Registered sources
 
-## Source register
+| Source | Intended use | Coverage and key limitation |
+|---|---|---|
+| TSMC, *2024 Sustainability Report* | Total energy, recycled water, Taiwan-fab tap-water consumption, water per wafer equivalent | 2024; measures have different company/subsidiary or Taiwan-fab boundaries. Total energy includes purchased electricity, natural gas, and diesel. Values checked against report pp. 120 and 129. |
+| Intel, *2025–26 Corporate Responsibility Report* | Candidate for future observations | Source identity checked; no observation extracted. Review each value, unit, year, boundary, and locator before use. |
+| Samsung Electronics, *Sustainability Report 2026* | Device Solutions Scope 1 plus market-based Scope 2 emissions | 2024; division-level, not a semiconductor-foundry-only total. Value checked against p. 72; original unit and documented conversion are retained. |
+| US EPA, *eGRID Summary Tables 2023* | CAMX regional electricity-generation CO₂e rate | 2023 regional generation factor, not a company-specific purchased-electricity factor. Rounded value checked against p. 2. |
+| US EPA, *2011–2017 GHGRP Industrial Profile: Electronics Manufacturing Sector* | Reported electronics-manufacturing emissions | 2017 US reporting facilities, including non-semiconductor activities; not a semiconductor-only or company total. Value checked against p. 3. |
 
-| Source ID | Source and local evidence | Measure/use | Coverage and boundary | Review status and limitations |
-|---|---|---|---|---|
-| `SRC001` | TSMC, *2024 Sustainability Report*; `data/intake/incoming/2024-TSMC-Sustainability-Report-e.pdf` | Total energy; recycled water; Taiwan-fab tap water; water per wafer equivalent | 2024. Company-wide or subsidiary scope for the energy, recycling, and intensity measures; Taiwan fabs only for tap-water consumption. See each observation's specific boundary. | Values and units checked against PDF pp. 120 and 129. Total energy includes electricity, natural gas, and diesel. Water measures have different scopes and meanings. |
-| `SRC002` | Intel, *2025-26 Corporate Responsibility Report*; `data/intake/incoming/Intel_Report.pdf` | Context for future energy, water, and GHG observations; no observation extracted yet | Report states calendar and fiscal 2025 unless otherwise specified. | Report identity checked. Extract no values until the table, reporting year, unit, boundary, and page are reviewed for each proposed record. |
-| `SRC003` | Samsung Electronics, *Sustainability Report 2026*; `data/intake/incoming/Samsung_Electronics_Sustainability_Report_2026_ENG.pdf` | Device Solutions Scope 1 plus market-based Scope 2 emissions | 2024, DS Division; Korean and global manufacturing sites as described in the report. Division is broader than semiconductor foundry operations. | Value and unit checked against PDF p. 72. Source reports 14,546 thousand tonnes CO2e; intake retains this original unit and records the conversion to tonnes. |
-| `SRC004` | U.S. EPA, *eGRID Summary Tables 2023*; `data/intake/incoming/E-Grid_Summary.pdf` | CAMX subregion total-output CO2e rate | 2023 eGRID regional electricity generation; not a company-specific purchased-electricity factor. | PDF p. 2 reports 430.0 lb CO2e/MWh. The summary is rounded and explicitly a subset of the detailed workbook; do not use it to claim precision beyond the displayed value. |
-| `SRC005` | U.S. EPA, *2011-2017 Greenhouse Gas Reporting Program Industrial Profile: Electronics Manufacturing Sector*; `data/intake/incoming/electronics_manufacturing_2017_industrial_profile.pdf` | 2017 reported electronics-manufacturing sector emissions | U.S. reporting facilities in an electronics sector that includes semiconductor and non-semiconductor facilities; reporting thresholds apply. | PDF p. 3 reports 6.1 million metric tons CO2e for 2017. This source does not substantiate a 2023 total. |
+The source register is in [sources_template.csv](../data/intake/sources_template.csv); record-level references and caveats are in [observations_template.csv](../data/intake/observations_template.csv).
 
-The source register is maintained in [`data/intake/sources_template.csv`](../data/intake/sources_template.csv). Record-level source links, locations, conversions, and caveats are in [`data/intake/observations_template.csv`](../data/intake/observations_template.csv).
+## Current observations
 
-## Observations currently included
+| Record | Value used in project | Year | Main caveat |
+|---|---:|---:|---|
+| OBS001 | 27,456,000 MWh total energy | 2024 | Includes electricity, natural gas, and diesel |
+| OBS002 | 284,600,000 m³ recycled water | 2024 | Recycling is not withdrawal or consumption |
+| OBS003 | 94,600,000 m³ Taiwan-fab tap-water consumption | 2024 | Taiwan fabs only |
+| OBS004 | 161.0 L per 12-inch equivalent wafer mask layer | 2024 | Normalized intensity; denominator must be preserved |
+| OBS005 | 14,546,000 t CO₂e | 2024 | Samsung Device Solutions Scope 1 plus market-based Scope 2 |
+| OBS006 | 430.0 lb CO₂e/MWh | 2023 | Rounded CAMX regional generation factor |
+| OBS007 | 6,100,000 t CO₂e | 2017 | EPA electronics sector, not semiconductor-only |
 
-| Record | Reported value used | Original value/unit | Data year | Comparability warning |
-|---|---:|---|---:|---|
-| `OBS001` | 27,456,000 MWh total energy | 27,456 GWh | 2024 | Total energy, not electricity-only |
-| `OBS002` | 284,600,000 m3 recycled water | 284.6 million m3 | 2024 | Recycled water, not withdrawal or consumption |
-| `OBS003` | 94,600,000 m3 Taiwan-fab tap-water consumption | 94.6 million m3 | 2024 | Taiwan fabs only |
-| `OBS004` | 161.0 L per 12-inch equivalent wafer mask layer | 161.0 L per 12-inch equivalent wafer mask layer | 2024 | Production-normalized intensity; photomask-count basis |
-| `OBS005` | 14,546,000 t CO2e | 14,546 thousand tonnes CO2e | 2024 | Samsung DS division, Scope 1 plus market-based Scope 2 |
-| `OBS006` | 430.0 lb CO2e/MWh | 430.0 lb CO2e/MWh | 2023 | Rounded regional generation factor |
-| `OBS007` | 6,100,000 t CO2e | 6.1 million metric tons CO2e | 2017 | EPA electronics sector, not semiconductor-only |
+Original values and units remain recorded with observations. A documented unit conversion does not mean the underlying measurement was independently audited. Missing observations are not treated as zero.
 
-The `reported` status indicates that the source reports the observation; a documented unit conversion does not turn the source measurement into an independently measured or audited value. No estimate is invented to fill absent records.
+## Collection and validation
 
-## Collection and validation procedure
+1. Preserve original source files and record publisher, title, year, geography, unit, boundary, and limitations.
+2. Transcribe the value and a page/table/field locator. Retain original value/unit and document any conversion.
+3. Link every observation to its source ID and URL. Use “Not stated” when the source omits a detail; do not guess.
+4. Check unique record IDs, required fields, numeric values, years, allowed statuses, metric-unit pairs, source links, and CSV structure.
+5. Review the validation report. A PASS means implemented checks passed; it does not prove a source or claim is true.
+6. Keep synthetic fixtures and intentionally manipulated records separate from source-reviewed observations.
 
-1. Preserve each original PDF and CSV. Do not edit a source document.
-2. Verify the publisher/agency, report title, relevant year, geography, unit, definition, and reporting boundary.
-3. Transcribe the value as shown and cite the PDF page/table in `source_locator`.
-4. If converting units, retain the original value/unit and the reproducible formula. Do not increase precision beyond the source's precision.
-5. Record limitations and uncertainty as described by the source. Use `Not stated` where information is absent; do not infer a confidence interval.
-6. Confirm unique record IDs, required columns, numeric values, whole-number years, allowed status, registered metric/unit, complete source links, and consistent CSV row widths. The Power BI export also checks that every observation's `source_id` resolves to the source register, each record ID is unique, and every metric has comparison guidance.
-7. Run the pipeline to a separate output directory, review the validation report, and verify the trusted output against its generated manifest.
-8. Keep the supplied synthetic input unchanged. A passing schema check proves only that implemented checks passed; it does not prove source accuracy, completeness, comparability, or scientific validity.
+## Comparison rules
 
-## Known limitations and future acquisition
-
-- No source-backed Intel observations have been added; the Intel report is registered for context only.
-- The EPA electronics-manufacturing PDF covers through 2017 only. Any newer sector value requires the actual 2023 EPA workbook/table and its aggregation definition; it must not be interpolated from this profile.
-- Greater precision for eGRID CAMX requires the detailed eGRID 2023 workbook and the exact field definition. Until then, retain the rounded 430.0 value.
-- A future expansion could add source-checked process-gas, water-stress, packaging, lifecycle, or facility-level records, but only when the source definition, period, geography, unit, and boundary can be verified. Expansion is not required to describe the current bounded dataset accurately.
-- Papers 1-5 have full-text reviews documented in [`docs/literature_review.md`](literature_review.md); Paper 2 was reviewed from rendered pages because its PDF contains no embedded text. The project owner certified the five papers' eligibility for the assignment on October 20, 2026. This is owner confirmation, not an independent audit of every journal's review process. Paper 6 is supplemental dissertation background and is not counted among the five journal papers.
-
-## Analytical safeguards
-
-Do not sum or directly compare total energy with electricity, recycled water with tap-water consumption, absolute volumes with product-normalized intensity, a grid-average factor with company emissions, or the EPA electronics-sector total with semiconductor-company totals. The dashboard should make these distinctions visible in labels, source details, and limitations. The seven-record collection is deliberately bounded and appropriate for demonstrating provenance and validation, not for estimating a global semiconductor footprint.
+A shared unit does not make measures comparable. Check metric definition, year, geography, organizational coverage, reporting boundary, and method. Do not combine total energy with electricity-only values, recycled water with consumption, water intensity with absolute volume, grid emission rates with company totals, or the EPA electronics-sector total with semiconductor-only emissions.
